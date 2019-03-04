@@ -58,11 +58,10 @@
       // .stop() 現在動作中のアニメーション処理を全て中止します。
       $(function(){
         $('.menu__list').children('li').hover(function(){
-          var num = $(this).index();
-          $('.menu__list__childList').eq(num).stop().slideDown();
-          // $('.menu__list__childList').parents('li').next().children('.menu__list__childList').stop().slideUp();
+       
+          $(this).children('.menu__list__childList').stop().slideDown();
         },function(){
-          $('.menu__list__childList').stop().slideUp();
+          $(this).children('.menu__list__childList').stop().slideUp();
         });
       });
     </script>
