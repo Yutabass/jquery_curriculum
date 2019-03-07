@@ -85,11 +85,12 @@
         $('.slider-ctrl-btn').click(function(){
           if($(this).data('ctrl') ==='prev'){
             img__num--;
-            img__slide();
+          
           }else if($(this).data('ctrl') ==='next'){
             img__num++;
-            img__slide();
+        
           };
+          img__slide();
         }); 
       });  
     </script>     

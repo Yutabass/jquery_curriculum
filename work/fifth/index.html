@@ -104,12 +104,13 @@
           if(option__value === 'all'){ 
             $('.list').find('li').show();
           }else {
-            $('li').each(function(){　
-              var data__type = $(this).data('category-type');
+            $('.list').children().each(function(index,item){　
+              console.log(index,item);
+              var data__type = $(item).data('category-type');
               if(option__value === data__type){
-                $(this).show();
+                $(item).show();
               }else{
-                $(this).hide();
+                $(item).hide();
               }
             });
           }

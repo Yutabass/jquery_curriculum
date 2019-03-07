@@ -47,9 +47,9 @@
         //左上ボタンの動き
         $('.menu__btn').click(function(){
           var data__type = $(this).data('scroll-place-type');
-          $('.contents').children().each(function(){
-            var contents__data__type = $(this).data('scroll-place-type');
-            var position = $(this).offset().top;
+          $('.contents').children('.title').each(function(index,item){
+            var contents__data__type = $(item).data('scroll-place-type');
+            var position = $(item).offset().top;
             if(data__type === contents__data__type){
               $('html,body').animate({
               scrollTop: position
