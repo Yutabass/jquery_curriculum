@@ -51,7 +51,7 @@
         //   var colorsArray = data.colorsArray;
         //   $.each(colorsArray, function (index,value){
         //     console.log(value);
-        //     $('.colorList').append('<li class="colorList__item"><p class="colorList__title" style="background-color:'+ value.hexValue +';"> '+ value.colorName +' </p></li>');
+            // $('.colorList').append('<li class="colorList__item"><p class="colorList__title" style="background-color:'+ value.hexValue +';"> '+ value.colorName +' </p></li>');
         //   });
         // });
         $.ajax({
@@ -59,7 +59,7 @@
         })
         .done(function(data) {
           var colorsArray = data.colorsArray;
-          var allType = [];
+          var allType = "";
           $.each(colorsArray, function(index,value){
             allType += '<li class="colorList__item"><p class="colorList__title" style="background-color:'+ value.hexValue +';"> '+ value.colorName +' </p></li>';
           });
