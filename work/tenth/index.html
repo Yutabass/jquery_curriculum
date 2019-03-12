@@ -69,15 +69,60 @@
       //
       //
       $(function(){
-        'use strict';
-        var textPage =0;
-        $('.search__btn').click(function(){
-          var textValue = $('.search__text__input').val();
-          $('input').change(function(){
+        var textPage = 0;
+        var searchTextNow;
+        function textShow() {
+          var searchTextBefore = searchTextNow;
+          searchTextNow = $('.search__text__input').val();
+          if(searchTextBefore === searchTextNow){
+            textPage ++;
+          }else{
             textPage = 0;
             $('.lists').empty();
+          }  
+            textPage ++;
+        };
+
+        function doneFunction(e){
+          var item = e.Items; 
+          var list = '';     
+          $.each(item, function (index,value){
+            list += '<li class="lists__item"><div class="lists__item__inner"><a href="'
+              + value.Item.itemURL +
+              '" class="lists__item__link" target="_blank"> <img src="'
+              + value.Item.largeImageUrl +
+              '" class="lists__item__img" alt=""><p class="lists__item__detail">作品名 ：'
+              + value.Item.title +
+              '</p><p class="lists__item__detail">作者　：'
+              + value.Item.author +
+              '</p><p class="lists__item__detail">出版社：'
+              + value.Item.publisherName +
+              '</p></a></div></li>';
           });
-          textPage ++;
+          $('.lists').prepend(list);
+          
+          if(e.hits === 0){
+            $('.lists').empty();
+            $('.lists').append('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>');
+          };
+        };
+      
+        function failFunction(e){
+          $('.lists').empty();
+          var failItem = e.responseJSON;
+          if(failItem){
+            $('.lists').prepend('<p class="message">error :'
+            + failItem.error +
+            '<br>description :'
+            + failItem.error_description +
+            '</p>');            
+          }else{
+            $('.lists').append('<p class="message">インターネット接続がありません。<br>再度接続を確認してお試しください。</p>');
+          }
+        };
+
+        $('.search__btn').click(function(){
+          textShow();
           $.ajax({
             url: 'https://app.rakuten.co.jp/services/api/BooksTotal/Search/20130522',
             type: 'GET',
@@ -85,42 +130,17 @@
             data: {
               applicationId: '1019399324990976605', 
               booksGenreId: '001',
-              keyword: textValue,
+              keyword: searchTextNow,
               page: textPage,
               hits: 20,
               timeout: 5000,
             },
-          }).done(function(data) {
-            var item = data.Items; 
-            var list = '';     
-            $.each(item, function (index,value){
-              list += '<li class="lists__item"><div class="lists__item__inner"><a href="'
-                + value.Item.itemURL +
-                '" class="lists__item__link" target="_blank"> <img src="'
-                + value.Item.largeImageUrl +
-                '" class="lists__item__img" alt=""><p class="lists__item__detail">作品名 ：'
-                + value.Item.title +
-                '</p><p class="lists__item__detail">作者　：'
-                + value.Item.author +
-                '</p><p class="lists__item__detail">出版社：'
-                + value.Item.publisherName +
-                '</p></a></div></li>';
-            });
-            $('.lists').prepend(list);
-            
-            if(data.hits === 0){
-              $('.lists').empty();
-              $('.lists').append('<p class="message">検索結果が見つかりませんでした。<br>別のキーワードで検索して下さい。</p>');
-            }
           })
-          .fail(function(data){
-            $('.lists').empty();
-            var failItem = data.responseJSON;     
-            $('.lists').prepend('<p class="message">error :'
-            + failItem.error +
-            '<br>description :'
-            + failItem.error_description +
-            '</p>');
+          .done(function(data) {
+            doneFunction(data);
+          })
+          .fail(function(error){
+            failFunction(error);
           })
         });
       });
